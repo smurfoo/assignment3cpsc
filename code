@@ -1,0 +1,73 @@
+namespace test
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.ReadLine();
+        }//end of Main
+        static int GetSafeInt(string prompt)
+        {
+            bool isValid = false;
+            int number = 0;
+            do
+            {
+                try
+                {
+                    Console.Write(prompt);
+                    number = int.Parse(Console.ReadLine());
+                    if (number > 0)
+                    {
+                        isValid = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid number ... try again");
+                    }
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+
+            } while (!isValid);
+            return number;
+        } // end of GetSafeInt
+        static int RollDice1()
+        {
+            Random random = new Random();
+            int number = random.Next(1, 7);
+            return number;
+        }//end of RollDice1
+        static int RollDice2()
+        {
+            Random random = new Random();
+            int number = random.Next(1, 7);
+            return number;
+        }//end of RollDice2
+        static void DisplayMenu(int diceRoll1, int diceRoll2)
+        {
+            int betAmount = GetSafeInt("Enter amount to bet: ");
+            int diceRollSum = diceRoll1 + diceRoll2;
+            bool winGame = false;
+            bool loseGame = false;
+            Console.WriteLine($"You rolled {diceRoll1} + {diceRoll2} = {diceRollSum}");
+            if (diceRollSum == 11 || diceRollSum == 7)
+            {
+                Console.WriteLine($"You win ${betAmount}");
+                winGame = true;
+            }
+            else if (diceRollSum == 2 || diceRollSum == 3 || diceRollSum == 12)
+            {
+                Console.WriteLine($"You lost ${betAmount}");
+            }
+            else
+            {
+                Console.WriteLine($"You rolled {diceRoll1} + {diceRoll2} = {diceRollSum}");
+                Console.WriteLine($"Point is {diceRollSum}");
+                Console.WriteLine($"");
+            }
+        }//end of DisplayMenu
+    }
+}

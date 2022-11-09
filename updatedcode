@@ -1,0 +1,83 @@
+namespace test
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int betAmount = GetSafeInt("Enter amount to bet: ");
+            int diceRoll = RollDice();
+            int diceRoll2 = RollDice2();
+            int diceRollSum = diceRoll + diceRoll2;
+            int point = 0;
+            bool winGame = false;
+            bool loseGame = false;
+            bool pointPhase = false;
+            if (diceRollSum == 11 || diceRollSum == 7)
+            {
+                Console.WriteLine($"You rolled {diceRoll} + {diceRoll2} = {diceRollSum}");
+                Console.WriteLine($"You win ${betAmount}");
+                winGame = true;
+            }
+            else if (diceRollSum == 2 || diceRollSum == 3 || diceRollSum == 12)
+            {
+                Console.WriteLine($"You rolled {diceRoll} + {diceRoll2} = {diceRollSum}");
+                Console.WriteLine($"You lost ${betAmount}");
+            }
+            else
+            {
+                Console.WriteLine($"You rolled {diceRoll} + {diceRoll2} = {diceRollSum}");
+                Console.WriteLine($"Point is {diceRollSum}");
+                pointPhase = true;
+            }
+            if (!pointPhase)
+            {
+                point = diceRollSum;
+                while (diceRollSum != point)
+                {
+
+                }
+            }
+            Console.ReadLine();
+        }//end of Main
+        static int GetSafeInt(string prompt)
+        {
+            bool isValid = false;
+            int number = 0;
+            do
+            {
+                try
+                {
+                    Console.Write(prompt);
+                    number = int.Parse(Console.ReadLine());
+                    if (number > 0)
+                    {
+                        isValid = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid number ... try again");
+                    }
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+
+            } while (!isValid);
+            return number;
+        } // end of GetSafeInt
+        static int RollDice()
+        {
+            Random random = new Random();
+            int number = random.Next(1, 7);
+            return number;
+        }//end of RollDice
+        static int RollDice2()
+        {
+            Random random = new Random();
+            int number = random.Next(1, 7);
+            return number;
+        }//end of RollDice
+    }
+}

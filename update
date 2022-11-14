@@ -1,0 +1,195 @@
+namespace test
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+
+            DisplayCraps();
+          
+        }//end of Main
+        static void DisplayCraps()
+        {
+            int diceRoll = RollDice(),
+           diceRoll2 = RollDice2(),
+           diceRollSum = diceRoll + diceRoll2,
+           winningsReturn = 0,
+           winnings = 0;
+            char playAgain = ' ';
+            do
+            {
+                int betAmount = GetSafeInt("Enter amount to bet: ");
+                //if statement for winnings that if a roll method returns a 0 it adds winninsg+= bet amount however if it returns 1; meaning you lsot the bet amount it winnings -= betamount
+                if (winningsReturn == 0)
+                {
+                    winnings += betAmount;
+                }
+                else
+                {
+                    winnings -= betAmount;
+                }
+                diceRoll = RollDice();
+                diceRoll2 = RollDice2();
+                diceRollSum = diceRoll + diceRoll2;
+                winningsReturn = NaturalRoll(diceRoll, diceRoll2, diceRollSum, betAmount);
+                winningsReturn = CrapsRoll(diceRoll, diceRoll2, diceRollSum, betAmount);
+                winningsReturn = PointRoll(diceRoll, diceRoll2, diceRollSum, betAmount);
+                //for points roll have a while loop here that checks for an int that will exit the loop that indicates that a point has been rolled or seven
+                Console.Write("Do you want to play again? (y/n): ");
+                playAgain = char.Parse(Console.ReadLine().ToUpper().Substring(0, 1));
+            } while (playAgain == 'Y');
+            Console.WriteLine($"You have net winnings {winnings}");
+            // net winnings does not work fully on PointRoll method
+        }
+        static int GetSafeInt(string prompt)
+        {
+            bool isValid = false;
+            int number = 0;
+            do
+            {
+                try
+                {
+                    Console.Write(prompt);
+                    number = int.Parse(Console.ReadLine());
+                    if (number > 0)
+                    {
+                        isValid = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid number ... try again");
+                    }
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+
+            } while (!isValid);
+            return number;
+        } // end of GetSafeInt
+        static int RollDice()
+        {
+            Random random = new Random();
+            int number = random.Next(1, 7);
+            return number;
+        }//end of RollDice
+        static int RollDice2()
+        {
+            Random random = new Random();
+            int number = random.Next(1, 7);
+            return number;
+        }//end of RollDice2
+        static int NaturalRoll(int roll, int roll2,int rollSum, int betAmount)
+        {
+            if (rollSum == 7 || rollSum == 11)
+            {
+                Console.WriteLine($"You rolled {roll} + {roll2} = {rollSum}");
+                Console.WriteLine($"You win ${betAmount}");
+            }
+            return 0;
+        }//end of naturalRoll
+        static int CrapsRoll(int roll, int roll2, int rollSum, int betAmount)
+        {
+            if (rollSum == 2 || rollSum == 3 || rollSum == 12)
+            {
+                Console.WriteLine($"You rolled {roll} + {roll2} = {rollSum}");
+                Console.WriteLine($"You lost ${betAmount}");
+            }
+            return 1;
+        }// end of crapsRoll
+        static int PointRoll(int roll, int roll2, int rollSum, int betAmount)
+        {
+            bool lostGame = false;
+            if (rollSum == 4 || rollSum == 5 || rollSum == 6 || rollSum == 8 || rollSum == 9 || rollSum == 10)
+            {
+                Console.WriteLine($"You rolled {roll} + {roll2} = {rollSum}");
+                Console.WriteLine($"Point is {rollSum}");
+                int point;
+                do
+                {
+                    int reRoll = RollDice(),
+                        reroll2 = RollDice2();
+                    point = reRoll + reroll2;
+                    Console.WriteLine($"You rolled {reRoll} + {reroll2} = {point}");
+                    if (point == 7)
+                    {
+                        Console.WriteLine($"You lost ${betAmount}");
+                        lostGame = true;
+                    }
+                    else if (point == rollSum)
+                    {
+                        Console.WriteLine($"You win ${betAmount}");
+                        lostGame = false;
+                    }
+                    else
+                    {
+                        lostGame = true;
+                    }
+                } while (point != rollSum && point != 7);
+              }
+            if (lostGame == false)
+            {
+                return 0;
+            }
+            else
+            {
+                return 1;
+            }
+        }//end of pointsRoll
+        static void PlayerPigTurn()
+        {
+            Console.WriteLine("---------------");
+            Console.WriteLine("| Game of Pig |");
+            Console.WriteLine("---------------");
+            int pointTotal = GetSafeInt("Enter the point total to play for: ");
+            Console.WriteLine("It's your turn.");
+            int rollTotal = 0,
+                diceRoll;
+            char choice = ' ';
+            bool continueChoice = false;
+            do
+            {
+                diceRoll = RollDice();
+                Console.WriteLine($"You rolled a {diceRoll}");
+                rollTotal += diceRoll;
+                Console.Write("Enter r to roll or h to hold (r/h): ");
+                choice = char.Parse(Console.ReadLine().ToUpper().Substring(0,1));
+                if (choice == 'R')
+                {
+                    continueChoice = true;
+                }
+                else
+                {
+                    continueChoice = false;
+                }
+                if (diceRoll == 1)
+                {
+                    Console.WriteLine("Your turn score is 0");
+                    continueChoice = false;
+                }
+                else
+                {
+                    continueChoice = true;
+                }
+            } while (continueChoice == true || rollTotal <= pointTotal);
+            Console.WriteLine($"Your turn point total is {rollTotal}");
+            if (rollTotal >= pointTotal)
+            {
+                Console.WriteLine("You WIN");
+            }
+        }//end of DisplayPigs
+        static void PigMenu()
+        {
+            Console.WriteLine("---------------");
+            Console.WriteLine("| Game of Pig |");
+            Console.WriteLine("---------------");
+            }
+        static void PlayerPigTurn()
+        {
+
+        }
+
+    }
+    }
